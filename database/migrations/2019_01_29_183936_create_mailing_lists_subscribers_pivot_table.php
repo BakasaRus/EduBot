@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMailingsTable extends Migration
+class CreateMailingListsSubscribersPivotTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,20 @@ class CreateMailingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('mailings', function (Blueprint $table) {
+        Schema::create('mailing_list_subscriber', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->text('text');
-            $table->string('attachments');
-            $table->dateTime('send_at')->nullable();
+            $table->bigInteger('subscriber_id')->unsigned();
             $table->integer('mailing_list_id')->unsigned();
             $table->timestamps();
 
+            $table->foreign('subscriber_id')
+                ->references('id')
+                ->on('subscribers');
+
             $table->foreign('mailing_list_id')
                 ->references('id')
-                ->on('mailing_lists')
-                ->onDelete('cascade');
+                ->on('mailing_lists');
         });
-
-
     }
 
     /**
@@ -38,9 +36,10 @@ class CreateMailingsTable extends Migration
      */
     public function down()
     {
-        Schema::table('mailings', function (Blueprint $table) {
+        Schema::table('mailing_list_subscriber', function (Blueprint $table) {
             $table->dropForeign('mailing_list_id');
+            $table->dropForeign('subscriber_id');
         });
-        Schema::dropIfExists('mailings');
+        Schema::dropIfExists('mailing_list_subscriber');
     }
 }

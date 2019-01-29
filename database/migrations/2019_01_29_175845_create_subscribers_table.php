@@ -14,7 +14,8 @@ class CreateSubscribersTable extends Migration
     public function up()
     {
         Schema::create('subscribers', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigInteger('id')->unsigned()->primary();
+            $table->boolean('agreed')->default(true);
             $table->timestamps();
         });
     }
