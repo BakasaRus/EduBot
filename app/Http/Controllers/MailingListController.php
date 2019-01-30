@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\MailingList;
+use App\Subscriber;
 use Illuminate\Http\Request;
 
 class MailingListController extends Controller
@@ -14,7 +15,7 @@ class MailingListController extends Controller
      */
     public function index()
     {
-        //
+        return view('lists.index')->with('lists', MailingList::all());
     }
 
     /**
@@ -24,7 +25,8 @@ class MailingListController extends Controller
      */
     public function create()
     {
-        //
+        $subscribers = Subscriber::where('agreed', '=', true)->get();
+        return view('lists.create')->with('subscribers', $subscribers);
     }
 
     /**
@@ -35,7 +37,17 @@ class MailingListController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|unique:mailing_lists',
+            'subscribers' => ''
+        ]);
+
+        $list = new MailingList();
+        $list->name = $validated['name'];
+        $list->save();
+        $list->subscribers()->attach($validated['subscribers']);
+
+        return redirect()->route('lists.index');
     }
 
     /**

@@ -19,4 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/subscribers', 'SubscriberController@index');
+Route::resource('subscribers', 'SubscriberController')->only([
+    'index', 'show'
+]);
+
+Route::resource('lists', 'MailingListController');
+Route::resource('mailings', 'MailingController');

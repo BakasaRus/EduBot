@@ -33,7 +33,16 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        <!-- TODO: Заменить вшитые подписи локализациями -->
+                        <li class="nav-item">
+                            <a href="{{ route('subscribers.index') }}" class="nav-link">Подписчики</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('lists.index') }}" class="nav-link">Списки рассылок</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('mailings.index') }}" class="nav-link">Рассылки</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
