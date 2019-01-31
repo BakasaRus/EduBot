@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mailing;
+use App\MailingList;
 use Illuminate\Http\Request;
 
 class MailingController extends Controller
@@ -14,7 +15,7 @@ class MailingController extends Controller
      */
     public function index()
     {
-        //
+        return view('mailings.index')->with('mailings', Mailing::all());
     }
 
     /**
@@ -24,7 +25,7 @@ class MailingController extends Controller
      */
     public function create()
     {
-        //
+        return view('mailings.create')->with('lists', MailingList::all());
     }
 
     /**
@@ -35,7 +36,17 @@ class MailingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|unique:mailings',
+            'text' => 'required',
+            'attachments' => 'nullable',
+            'mailing_list_id' => 'required|integer',
+            'send_at' => 'required'
+        ]);
+
+        Mailing::create($validated);
+
+        return redirect()->route('mailings.index');
     }
 
     /**

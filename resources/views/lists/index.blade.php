@@ -11,6 +11,7 @@
                 <th>ID</th>
                 <th>Название</th>
                 <th>Подписчики</th>
+                <th>Рассылки</th>
                 <th>Создана</th>
                 <th>Изменена</th>
             </tr>
@@ -21,6 +22,7 @@
                     <td>{{ $list->id }}</td>
                     <td>{{ $list->name }}</td>
                     <td>{{ $list->subscribers->pluck('id') }}</td>
+                    <td>{{ $list->mailings->pluck('name') }}</td>
                     <td>{{ $list->created_at }}</td>
                     <td>{{ $list->updated_at }}</td>
                 </tr>

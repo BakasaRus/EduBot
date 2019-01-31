@@ -4,14 +4,14 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Новая рассылка</h5>
+            <h5 class="card-title">Новый список рассылки</h5>
             <form action="{{ route('lists.store') }}" method="post">
                 @csrf
                 <div class="form-group">
                     <label for="nameId">Название</label>
                     <input type="text"
                            class="form-control" name="name" id="nameId" aria-describedby="nameHelpId" placeholder="">
-                    <small id="nameHelpId" class="form-text text-muted">Введите название рассылки. Оно должно быть уникальным</small>
+                    <small id="nameHelpId" class="form-text text-muted">Введите название списка рассылки. Оно должно быть уникальным</small>
                 </div>
                 <div class="form-group">
                     <label for="subscribersId">Получатели</label>
