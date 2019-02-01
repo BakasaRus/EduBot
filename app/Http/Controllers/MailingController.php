@@ -9,6 +9,16 @@ use Illuminate\Http\Request;
 class MailingController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -39,7 +49,7 @@ class MailingController extends Controller
         $validated = $request->validate([
             'name' => 'required|unique:mailings',
             'text' => 'required',
-            'attachments' => 'nullable',
+            'attachments' => '',
             'mailing_list_id' => 'required|integer',
             'send_at' => 'required'
         ]);

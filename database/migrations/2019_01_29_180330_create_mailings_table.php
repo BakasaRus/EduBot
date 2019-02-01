@@ -17,7 +17,7 @@ class CreateMailingsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('text');
-            $table->string('attachments');
+            $table->string('attachments')->nullable();
             $table->dateTime('send_at')->nullable();
             $table->integer('mailing_list_id')->unsigned();
             $table->timestamps();

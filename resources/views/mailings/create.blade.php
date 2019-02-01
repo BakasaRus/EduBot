@@ -37,18 +37,10 @@
                         @endforeach
                     </select>
                 </div>
-                {{-- TODO: Поправить пикер времени --}}
                 <div class="form-group">
                     <label for="sendAtId">Время рассылки</label>
-                    <input type='text' class="form-control" name="send_at" id='sendAtId' aria-describedby="sendAtHelpId" value="31.01.2019 22:00"/>
+                    <input type='datetime-local' class="form-control" name="send_at" id='sendAtId' aria-describedby="sendAtHelpId" />
                     <small id="sendAtHelpId" class="form-text text-muted">Дата и время начала рассылки сообщений</small>
-                    <script type="text/javascript">
-                        $.ready(function () {
-                            $('#sendAtId').datetimepicker({
-                                locale: 'ru'
-                            });
-                        });
-                    </script>
                 </div>
                 <button type="submit" class="btn btn-primary">Создать</button>
             </form>
