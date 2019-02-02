@@ -21,8 +21,8 @@
                 <tr>
                     <td>{{ $list->id }}</td>
                     <td>{{ $list->name }}</td>
-                    <td>{{ $list->subscribers->pluck('id') }}</td>
-                    <td>{{ $list->mailings->pluck('name') }}</td>
+                    <td>{{ $list->subscribers->count() }}</td>
+                    <td>{{ $list->mailings->implode('name', '<br>') }}</td>
                     <td>{{ $list->created_at }}</td>
                     <td>{{ $list->updated_at }}</td>
                 </tr>
