@@ -25,5 +25,6 @@ Route::resource('subscribers', 'SubscriberController')->only([
     'index', 'show'
 ]);
 
+Route::model('list', \App\MailingList::class);
 Route::resource('lists', 'MailingListController');
 Route::resource('mailings', 'MailingController');

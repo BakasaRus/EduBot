@@ -67,7 +67,8 @@ class MailingController extends Controller
      */
     public function show(Mailing $mailing)
     {
-        //
+        $mailing->load(['mailingList']);
+        return view('mailings.show')->with('mailing', $mailing);
     }
 
     /**

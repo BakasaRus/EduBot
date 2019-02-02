@@ -3,36 +3,43 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            Рассылки
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Рассылки</h4>
+                <a href="{{ route('mailings.create') }}" class="btn btn-primary btn-sm">Новая рассылка</a>
+            </div>
         </div>
-        <table class="table table-border table-striped">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Название</th>
-                <th>Текст</th>
-                <th>Прикрепления</th>
-                <th>Список рассылки</th>
-                <th>Отправлена</th>
-                <th>Создана</th>
-                <th>Изменена</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($mailings as $mailing)
+        <div class="card-body p-0">
+            <table class="table table-border mb-0">
+                <thead>
                 <tr>
-                    <td>{{ $mailing->id }}</td>
-                    <td>{{ $mailing->name }}</td>
-                    <td style="white-space: pre-wrap;">{{ $mailing->text }}</td>
-                    <td>{{ $mailing->attachments }}</td>
-                    <td>{{ $mailing->mailingList->name }}</td>
-                    <td>{{ $mailing->send_at }}</td>
-                    <td>{{ $mailing->created_at }}</td>
-                    <td>{{ $mailing->updated_at }}</td>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Список рассылки</th>
+                    <th>Время рассылки</th>
+                    <th>Действия</th>
                 </tr>
-            @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                @foreach($mailings as $mailing)
+                    <tr>
+                        <td>{{ $mailing->id }}</td>
+                        <td><a href="{{ route('mailings.show', ['id' => $mailing->id]) }}">{{ $mailing->name }}</a></td>
+                        <td>{{ $mailing->mailingList->name }}</td>
+                        <td>{{ $mailing->send_at }}</td>
+                        <td>
+                            <a href="{{ route('mailings.show', ['id' => $mailing->id]) }}" aria-disabled="true" class="btn btn-outline-primary btn-sm">Отправить</a>
+                            <a href="{{ route('mailings.edit', ['id' => $mailing->id]) }}" class="btn btn-outline-success btn-sm">Редактировать</a>
+                            <a href="{{ route('mailings.show', ['id' => $mailing->id]) }}" class="btn btn-outline-danger btn-sm" onclick="event.preventDefault(); $('#del_{{ $mailing->id }}').submit();">Удалить</a>
+                            <form action="{{ route('lists.destroy', ['id' => $mailing->id]) }}" id="del_{{ $mailing->id }}" method="post" style="display: none;">
+                                @method('DELETE')
+                                @csrf
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 @endsection
 

@@ -3,28 +3,31 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            Список подписчиков рассылок
+            <h4 class="mb-0">Подписчики</h4>
         </div>
-        <table class="table table-border table-striped">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Создан</th>
-                <th>Изменён</th>
-                <th>Удалён</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($subscribers as $subscriber)
+
+        <div class="card-body p-0">
+            <table class="table table-border mb-0">
+                <thead>
                 <tr>
-                    <td>{{ $subscriber->id }}</td>
-                    <td>{{ $subscriber->created_at }}</td>
-                    <td>{{ $subscriber->updated_at }}</td>
-                    <td>{{ $subscriber->deleted_at }}</td>
+                    <th>ID</th>
+                    <th>Создан</th>
+                    <th>Изменён</th>
+                    <th>Удалён</th>
                 </tr>
-            @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                @foreach($subscribers as $subscriber)
+                    <tr>
+                        <td>{{ $subscriber->id }}</td>
+                        <td>{{ $subscriber->created_at }}</td>
+                        <td>{{ $subscriber->updated_at }}</td>
+                        <td>{{ $subscriber->deleted_at }}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 @endsection
 
