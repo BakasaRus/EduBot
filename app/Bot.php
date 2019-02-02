@@ -13,7 +13,11 @@ class Bot
      * @param $id
      */
     static function createSubscriber($id) {
-        Subscriber::withTrashed()->firstOrCreate(['id' => $id])->restore();
+        $subscriber = Subscriber::withTrashed()
+                                ->firstOrCreate(['id' => $id]);
+        \Log::debug($subscriber);
+        $subscriber->restore();
+        $subscriber->lists()->syncWithoutDetaching(1);
     }
 
     /**

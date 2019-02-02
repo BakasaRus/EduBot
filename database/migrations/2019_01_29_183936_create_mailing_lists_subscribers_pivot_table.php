@@ -21,11 +21,13 @@ class CreateMailingListsSubscribersPivotTable extends Migration
 
             $table->foreign('subscriber_id')
                 ->references('id')
-                ->on('subscribers');
+                ->on('subscribers')
+                ->onDelete('cascade');
 
             $table->foreign('mailing_list_id')
                 ->references('id')
-                ->on('mailing_lists');
+                ->on('mailing_lists')
+                ->onDelete('cascade');
         });
     }
 
