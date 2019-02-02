@@ -15,8 +15,8 @@ class CreateSubscribersTable extends Migration
     {
         Schema::create('subscribers', function (Blueprint $table) {
             $table->bigInteger('id')->unsigned()->primary();
-            $table->boolean('agreed')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
