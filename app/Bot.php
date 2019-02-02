@@ -2,7 +2,7 @@
 
 namespace App;
 
-use ATehnix\LaravelVkRequester\Models\VkRequest;
+use ATehnix\VkClient\Client;
 use Illuminate\Support\Facades\Log;
 
 class Bot
@@ -30,17 +30,21 @@ class Bot
         }
     }
 
+    /**
+     * Send a reply to user's message.
+     *
+     * @param $data
+     * @throws \ATehnix\VkClient\Exceptions\VkException
+     */
     static function processMessage($data) {
         Bot::createSubscriber($data['from_id']);
-
-        VkRequest::create([
-            'method' => 'message.send',
-            'parameters' => [
-                'peer_id' => $data['from_id'],
-                'reply_to' => $data['id'],
-                'message' => 'Вы мне написали вот это:'
-            ],
-            'token' => config('services.vk.group_token')
+        $api = new Client('5.92');
+        $api->setDefaultToken(config('services.vk.group_token'));
+        $response = $api->request('messages.send', [
+            'peer_id' => $data['from_id'],
+            'random_id' => random_int(PHP_INT_MIN, PHP_INT_MAX),
+            'reply_to' => $data['id'],
+            'message' => 'Это сообщение является ответом на данное'
         ]);
     }
 }

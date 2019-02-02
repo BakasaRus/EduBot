@@ -9,11 +9,12 @@
     "license": "MIT",
     "require": {
         "php": "^7.1.3",
-        "atehnix/laravel-vk-requester": "0.9.0",
+        "atehnix/vk-client": "1.3.0",
         "barryvdh/laravel-ide-helper": "v2.5.3",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.7.*",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "predis/predis": "v1.1.1"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

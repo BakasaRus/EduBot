@@ -10,12 +10,14 @@ class BotController extends Controller
     /**
      * Handle the incoming request from VK Callback API.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return string
+     * @throws \ATehnix\VkClient\Exceptions\VkException
      */
     public function __invoke(Request $request)
     {
         $all = $request->json()->all();
+
         $type = $all['type'];
         $group_id = $all['group_id'];
         $data = $all['object'] ?? null;
