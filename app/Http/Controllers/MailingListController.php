@@ -35,7 +35,7 @@ class MailingListController extends Controller
      */
     public function create()
     {
-        $subscribers = Subscriber::where('agreed', '=', true)->get();
+        $subscribers = Subscriber::all();
         return view('lists.create')->with('subscribers', $subscribers);
     }
 
