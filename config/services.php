@@ -40,4 +40,10 @@ return [
         ],
     ],
 
+    'vk' => [
+        'group_id' => env('VK_GROUP_ID'),
+        'group_token' => env('VK_GROUP_TOKEN'),
+        'group_confirmation' => env('VK_GROUP_CONFIRMATION'),
+    ],
+
 ];
