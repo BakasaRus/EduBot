@@ -13,7 +13,7 @@ class Bot
      * @param $id
      */
     static function createSubscriber($id) {
-        Subscriber::firstOrCreate($id)->restore();
+        Subscriber::onlyTrashed()->firstOrCreate(['id' => $id])->restore();
     }
 
     /**
@@ -24,7 +24,7 @@ class Bot
      */
     static function deleteSubscriber($id) {
         try {
-            Subscriber::first($id)->delete();
+            Subscriber::find($id)->delete();
         } catch (\Exception $e) {
             Log::error('Looks like we do not have primary key on Subscribers model. Interesting!');
         }

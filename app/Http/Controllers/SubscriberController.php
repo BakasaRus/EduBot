@@ -24,7 +24,7 @@ class SubscriberController extends Controller
      */
     public function index()
     {
-        $subscribers = Subscriber::all();
+        $subscribers = Subscriber::withTrashed()->get();
         return view('subscribers.index', compact(['subscribers']));
     }
 
