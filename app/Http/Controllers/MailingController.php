@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mailing;
 use App\MailingList;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class MailingController extends Controller
 {
@@ -49,9 +50,9 @@ class MailingController extends Controller
         $validated = $request->validate([
             'name' => 'required|unique:mailings',
             'text' => 'required',
-            'attachments' => '',
+            'attachments' => 'nullable',
             'mailing_list_id' => 'required|integer',
-            'send_at' => 'required'
+            'send_at' => 'nullable'
         ]);
 
         Mailing::create($validated);
@@ -79,7 +80,9 @@ class MailingController extends Controller
      */
     public function edit(Mailing $mailing)
     {
-        //
+        return view('mailings.edit')
+            ->with('mailing', $mailing)
+            ->with('lists', MailingList::all());
     }
 
     /**
@@ -91,7 +94,21 @@ class MailingController extends Controller
      */
     public function update(Request $request, Mailing $mailing)
     {
-        //
+        $validated = $request->validate([
+            'name' => [
+                'required',
+                Rule::unique('mailings')->ignore($mailing->id)
+            ],
+            'text' => 'required',
+            'attachments' => 'nullable',
+            'mailing_list_id' => 'required|integer',
+            'send_at' => 'nullable'
+        ]);
+
+        $mailing->fill($validated);
+        $mailing->save();
+
+        return redirect()->route('mailings.index');
     }
 
     /**

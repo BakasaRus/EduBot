@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\MailingList;
 use App\Subscriber;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class MailingListController extends Controller
 {
@@ -49,13 +50,13 @@ class MailingListController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|unique:mailing_lists',
-            'subscribers' => ''
+            'subscribers' => 'nullable'
         ]);
 
         $list = new MailingList();
         $list->name = $validated['name'];
         $list->save();
-        $list->subscribers()->attach($validated['subscribers']);
+        $list->subscribers()->attach($validated['subscribers'] ?? null);
 
         return redirect()->route('lists.index');
     }
@@ -80,7 +81,9 @@ class MailingListController extends Controller
      */
     public function edit(MailingList $mailingList)
     {
-        //
+        return view('lists.edit')
+            ->with('list', $mailingList)
+            ->with('subscribers', Subscriber::all());
     }
 
     /**
@@ -92,7 +95,19 @@ class MailingListController extends Controller
      */
     public function update(Request $request, MailingList $mailingList)
     {
-        //
+        $validated = $request->validate([
+            'name' => [
+                'required',
+                Rule::unique('mailing_lists')->ignore($mailingList->id),
+            ],
+            'subscribers' => 'nullable'
+        ]);
+
+        $mailingList->name = $validated['name'];
+        $mailingList->save();
+        $mailingList->subscribers()->sync($validated['subscribers'] ?? null);
+
+        return redirect()->route('lists.index');
     }
 
     /**
@@ -100,9 +115,16 @@ class MailingListController extends Controller
      *
      * @param  \App\MailingList  $mailingList
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(MailingList $mailingList)
     {
-        //
+        if ($mailingList->id == 1)
+            return redirect()->route('lists.index');
+
+        $mailingList->mailings()->delete();
+        $mailingList->delete();
+
+        return redirect()->route('lists.index');
     }
 }
