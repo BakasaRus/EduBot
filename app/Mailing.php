@@ -6,14 +6,20 @@ use ATehnix\VkClient\Client;
 use ATehnix\VkClient\Exceptions\VkException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Mailing
  *
  * @property-read \App\MailingList $mailingList
+ * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mailing newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mailing newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Mailing onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mailing query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Query\Builder|\App\Mailing withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Mailing withoutTrashed()
  * @mixin \Eloquent
  * @property int $id
  * @property string $name
@@ -23,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $mailing_list_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mailing whereAttachments($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mailing whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mailing whereId($value)
@@ -34,6 +41,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Mailing extends Model
 {
+    use SoftDeletes;
+    
     protected $fillable = ['name', 'text', 'attachments', 'send_at', 'mailing_list_id'];
 
     public function mailingList() {

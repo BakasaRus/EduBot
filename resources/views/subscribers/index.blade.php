@@ -11,6 +11,7 @@
                 <thead>
                 <tr>
                     <th>ID</th>
+                    <th>ФИО</th>
                     <th>Создан</th>
                     <th>Изменён</th>
                     <th>Удалён</th>
@@ -20,6 +21,7 @@
                 @foreach($subscribers as $subscriber)
                     <tr>
                         <td>{{ $subscriber->id }}</td>
+                        <td>{{ $subscriber->name }} {{ $subscriber->surname }}</td>
                         <td>{{ $subscriber->created_at }}</td>
                         <td>{{ $subscriber->updated_at }}</td>
                         <td>{{ $subscriber->deleted_at }}</td>

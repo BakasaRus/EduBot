@@ -15,9 +15,10 @@ class Bot
     static function createSubscriber($id) {
         $subscriber = Subscriber::withTrashed()
                                 ->firstOrCreate(['id' => $id]);
-        \Log::debug($subscriber);
         $subscriber->restore();
         $subscriber->lists()->syncWithoutDetaching(1);
+
+        $subscriber->setNameFromVk();
     }
 
     /**
@@ -44,7 +45,7 @@ class Bot
         Bot::createSubscriber($data['from_id']);
         $api = new Client('5.92');
         $api->setDefaultToken(config('services.vk.group_token'));
-        $response = $api->request('messages.send', [
+        $api->request('messages.send', [
             'peer_id' => $data['from_id'],
             'random_id' => random_int(PHP_INT_MIN, PHP_INT_MAX),
             'reply_to' => $data['id'],
