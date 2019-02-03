@@ -30,7 +30,7 @@
                             <a href="{{ route('mailings.show', ['id' => $mailing->id]) }}" aria-disabled="true" class="btn btn-outline-primary btn-sm">Отправить</a>
                             <a href="{{ route('mailings.edit', ['id' => $mailing->id]) }}" class="btn btn-outline-success btn-sm">Редактировать</a>
                             <a href="{{ route('mailings.show', ['id' => $mailing->id]) }}" class="btn btn-outline-danger btn-sm" onclick="event.preventDefault(); $('#del_{{ $mailing->id }}').submit();">Удалить</a>
-                            <form action="{{ route('lists.destroy', ['id' => $mailing->id]) }}" id="del_{{ $mailing->id }}" method="post" style="display: none;">
+                            <form action="{{ route('mailings.destroy', ['id' => $mailing->id]) }}" id="del_{{ $mailing->id }}" method="post" style="display: none;">
                                 @method('DELETE')
                                 @csrf
                             </form>

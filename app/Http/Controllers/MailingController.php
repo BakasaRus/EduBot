@@ -114,11 +114,13 @@ class MailingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Mailing  $mailing
+     * @param  \App\Mailing $mailing
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(Mailing $mailing)
     {
-        //
+        $mailing->delete();
+        return redirect()->route('mailings.index');
     }
 }
