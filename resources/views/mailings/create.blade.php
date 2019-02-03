@@ -7,7 +7,7 @@
             @include('errors')
             <form action="{{ route('mailings.store') }}" method="post">
                 @csrf
-
+                @include('mailings.form')
                 <button type="submit" class="btn btn-primary">Создать</button>
             </form>
         </div>
