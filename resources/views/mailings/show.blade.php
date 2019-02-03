@@ -2,8 +2,10 @@
 
 @section('content')
     <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">{{ $mailing->name }}</h4>
+        </div>
         <div class="card-body">
-            <h4 class="card-title">{{ $mailing->name }}</h4>
             <h5>Текст</h5>
             <p>{!! $mailing->text !!}</p>
             <h5>Прикрепления</h5>

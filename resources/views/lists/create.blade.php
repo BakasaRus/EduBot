@@ -3,8 +3,10 @@
 <!-- TODO: Заменить вшитые строки на локализацию -->
 @section('content')
     <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">Новый список рассылки</h4>
+        </div>
         <div class="card-body">
-            <h5 class="card-title">Новый список рассылки</h5>
             @include('errors')
             <form action="{{ route('lists.store') }}" method="post">
                 @csrf

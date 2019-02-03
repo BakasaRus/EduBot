@@ -2,8 +2,10 @@
 
 @section('content')
     <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">{{ $list->name }}</h4>
+        </div>
         <div class="card-body">
-            <h4 class="card-title">{{ $list->name }}</h4>
             <h5>Подписчики</h5>
             <p>{!! $list->subscribers->implode('id', '<br>') !!}</p>
             <h5>Рассылки</h5>
