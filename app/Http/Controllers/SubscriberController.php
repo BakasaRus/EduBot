@@ -57,7 +57,8 @@ class SubscriberController extends Controller
      */
     public function show(Subscriber $subscriber)
     {
-        //
+        $subscriber->load('lists');
+        return view('subscribers.show')->with('subscriber', $subscriber);
     }
 
     /**

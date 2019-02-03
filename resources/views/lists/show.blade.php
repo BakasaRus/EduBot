@@ -7,9 +7,25 @@
         </div>
         <div class="card-body">
             <h5>Подписчики</h5>
-            <p>{!! $list->subscribers->implode('id', '<br>') !!}</p>
+            <ul>
+                @foreach($list->subscribers as $subscriber)
+                    <li>
+                        <a href="{{ route('subscribers.show', ['id' => $subscriber->id]) }}">
+                            {{ $subscriber->full_name }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
             <h5>Рассылки</h5>
-            <p>{!! $list->mailings->implode('name', '<br>') !!}</p>
+            <ul>
+                @foreach($list->mailings as $mailing)
+                    <li>
+                        <a href="{{ route('mailings.show', ['id' => $mailing->id]) }}">
+                            {{ $mailing->name }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
         </div>
     </div>
 @endsection

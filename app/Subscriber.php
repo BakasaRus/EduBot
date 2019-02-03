@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $id
  * @property string $name
  * @property string $surname
+ * @property string $full_name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -40,6 +41,15 @@ class Subscriber extends Model
 
     public function lists() {
         return $this->belongsToMany(MailingList::class);
+    }
+
+    /**
+     * Useful getter for full name
+     *
+     * @return string
+     */
+    public function getFullNameAttribute() {
+        return $this->name . ' ' . $this->surname;
     }
 
     /**

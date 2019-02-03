@@ -9,9 +9,9 @@
     <select multiple class="form-control" name="subscribers[]" aria-describedby="subscribersHelpId" id="subscribersId">
         @foreach($subscribers as $subscriber)
             @isset($list)
-                <option value="{{ $subscriber->id }}" {{ (old('subscribers') ?? $list->subscribers)->contains($subscriber) ? "selected" : "" }}>{{ $subscriber->id }}</option>
+                <option value="{{ $subscriber->id }}" {{ (old('subscribers') ?? $list->subscribers)->contains($subscriber) ? "selected" : "" }}>{{ $subscriber->full_name }}</option>
             @else
-                <option value="{{ $subscriber->id }}">{{ $subscriber->id }}</option>
+                <option value="{{ $subscriber->id }}">{{ $subscriber->full_name }}</option>
             @endisset
         @endforeach
     </select>

@@ -21,7 +21,11 @@
                 @foreach($subscribers as $subscriber)
                     <tr>
                         <td>{{ $subscriber->id }}</td>
-                        <td>{{ $subscriber->name }} {{ $subscriber->surname }}</td>
+                        <td>
+                            <a href="{{ route('subscribers.show', ['id' => $subscriber->id]) }}">
+                                {{ $subscriber->full_name }}
+                            </a>
+                        </td>
                         <td>{{ $subscriber->created_at }}</td>
                         <td>{{ $subscriber->updated_at }}</td>
                         <td>{{ $subscriber->deleted_at }}</td>
