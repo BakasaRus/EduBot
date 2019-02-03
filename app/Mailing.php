@@ -49,11 +49,17 @@ class Mailing extends Model
         return $this->belongsTo(MailingList::class);
     }
 
+    /**
+     * Send Mailing to Subscribers
+     *
+     * @throws \Exception
+     */
     public function send() {
         if (is_null($this->send_at)) {
             $this->send_at = Carbon::now();
             $this->save();
         }
+        $this->delete();
 
         $api = new Client('5.92');
         $api->setDefaultToken(config('services.vk.group_token'));

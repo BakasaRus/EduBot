@@ -22,11 +22,15 @@ class MailingController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('mailings.index')->with('mailings', Mailing::all());
+        if ($request->deleted == 1)
+            return view('mailings.index')->with('mailings', Mailing::onlyTrashed()->get());
+        else
+            return view('mailings.index')->with('mailings', Mailing::all());
     }
 
     /**
@@ -128,7 +132,8 @@ class MailingController extends Controller
      * Send mailing to subscribers of mailing list
      *
      * @param Mailing $mailing
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function send(Mailing $mailing) {
         $mailing->send();
