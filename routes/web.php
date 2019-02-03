@@ -28,3 +28,4 @@ Route::resource('subscribers', 'SubscriberController')->only([
 Route::model('list', \App\MailingList::class);
 Route::resource('lists', 'MailingListController');
 Route::resource('mailings', 'MailingController');
+Route::post('mailings/{mailing}/send', 'MailingController@send')->name('mailings.send');

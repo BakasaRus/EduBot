@@ -123,4 +123,15 @@ class MailingController extends Controller
         $mailing->delete();
         return redirect()->route('mailings.index');
     }
+
+    /**
+     * Send mailing to subscribers of mailing list
+     *
+     * @param Mailing $mailing
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function send(Mailing $mailing) {
+        $mailing->send();
+        return redirect()->route('mailings.index');
+    }
 }

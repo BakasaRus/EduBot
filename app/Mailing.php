@@ -2,6 +2,9 @@
 
 namespace App;
 
+use ATehnix\VkClient\Client;
+use ATehnix\VkClient\Exceptions\VkException;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -35,5 +38,35 @@ class Mailing extends Model
 
     public function mailingList() {
         return $this->belongsTo(MailingList::class);
+    }
+
+    public function send() {
+        if (is_null($this->send_at)) {
+            $this->send_at = Carbon::now();
+            $this->save();
+        }
+
+        $api = new Client('5.92');
+        $api->setDefaultToken(config('services.vk.group_token'));
+
+        $count = 100;
+        $all = $this->mailingList->subscribers->pluck('id');
+        $random_id = random_int(PHP_INT_MIN, PHP_INT_MAX);
+
+        while ($all->isNotEmpty()) {
+            $current = $all->splice(0, $count);
+
+            try {
+                $api->request('messages.send', [
+                    'user_ids' => $current->all(),
+                    'message' => $this->text,
+                    'attachment' => $this->attachments,
+                    'random_id' => $random_id
+                ]);
+            }
+            catch (VkException $e) {
+                \Log::error("VK Error {$e->getCode()}: {$e->getMessage()}");
+            }
+        }
     }
 }
