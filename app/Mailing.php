@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $name
  * @property string $text
  * @property string|null $attachments
- * @property string|null $send_at
+ * @property \Illuminate\Support\Carbon|null $send_at
  * @property int $mailing_list_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -45,6 +45,8 @@ class Mailing extends Model
     
     protected $fillable = ['name', 'text', 'attachments', 'send_at', 'mailing_list_id'];
 
+    protected $dates = ['deleted_at', 'send_at'];
+
     public function mailingList() {
         return $this->belongsTo(MailingList::class);
     }
@@ -52,6 +54,7 @@ class Mailing extends Model
     /**
      * Send Mailing to Subscribers
      *
+     * @return bool Was sending successful or not
      * @throws \Exception
      */
     public function send() {
@@ -60,6 +63,8 @@ class Mailing extends Model
             $this->save();
         }
         $this->delete();
+
+        $is_successful = true;
 
         $api = new Client('5.92');
         $api->setDefaultToken(config('services.vk.group_token'));
@@ -81,7 +86,10 @@ class Mailing extends Model
             }
             catch (VkException $e) {
                 \Log::error("VK Error {$e->getCode()}: {$e->getMessage()}");
+                $is_successful = false;
             }
         }
+
+        return $is_successful;
     }
 }
