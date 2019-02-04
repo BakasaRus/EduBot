@@ -51,6 +51,10 @@ class Mailing extends Model
         return $this->belongsTo(MailingList::class);
     }
 
+    public function setSendAtAttribute($value) {
+        $this->attributes['send_at'] = Carbon::createFromFormat('Y-m-d\TH:i', $value);
+    }
+
     /**
      * Send Mailing to Subscribers
      *
