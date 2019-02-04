@@ -48,7 +48,7 @@ class SendMailings extends Command
         }
 
         foreach ($mailings as $mailing) {
-            if ($mailing->send_at->lessThanOrEqualTo($now)) {
+            if ($mailing->send_at->eq($now)) {
                 $success = $mailing->send();
                 if ($success)
                     $this->info("Mailing \"{$mailing->name}\" has been sent successfully");
