@@ -106,7 +106,7 @@ class MailingController extends Controller
             'text' => 'required',
             'attachments' => 'nullable',
             'mailing_list_id' => 'required|integer',
-            'send_at' => 'nullable|date|date_format:Y-m-d\TH:i'
+            'send_at' => 'nullable|date'
         ]);
 
         $mailing->fill($validated);
