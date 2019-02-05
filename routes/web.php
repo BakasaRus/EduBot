@@ -21,15 +21,19 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::any('/bot', 'BotController')->name('bot');
 
-Route::resource('subscribers', 'SubscriberController')->only([
-    'index', 'show'
-]);
-
 Route::bind('mailing', function ($value) {
     return \App\Mailing::withTrashed()->where('id', $value)->first() ?? abort(404);
 });
 
+Route::bind('subscriber', function ($value) {
+    return \App\Subscriber::withTrashed()->where('id', $value)->first() ?? abort(404);
+});
+
 Route::model('list', \App\MailingList::class);
+
+Route::resource('subscribers', 'SubscriberController')->only([
+    'index', 'show'
+]);
 Route::resource('lists', 'MailingListController');
 Route::resource('mailings', 'MailingController');
 Route::post('mailings/{mailing}/send', 'MailingController@send')->name('mailings.send');
