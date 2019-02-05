@@ -52,7 +52,7 @@ class Mailing extends Model
     }
 
     public function setSendAtAttribute($value) {
-        $this->attributes['send_at'] = Carbon::parse($value);
+        $this->attributes['send_at'] = $value ? Carbon::parse($value) : null;
     }
 
     /**
