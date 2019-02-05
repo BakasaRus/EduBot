@@ -33,7 +33,7 @@
                         <td>{{ $mailing->id }}</td>
                         <td><a href="{{ route('mailings.show', ['id' => $mailing->id]) }}">{{ $mailing->name }}</a></td>
                         <td>{{ $mailing->mailingList->name }}</td>
-                        <td>{{ $mailing->send_at }}</td>
+                        <td>{{ $mailing->send_at ?? "Не задано" }}</td>
                         <td>
                             @if($mailing->trashed())
                                 <a href="{{ route('mailings.show', ['id' => $mailing->id]) }}" class="btn btn-outline-danger btn-sm" onclick="event.preventDefault(); $('#del_{{ $mailing->id }}').submit();">Удалить навсегда</a>
@@ -54,6 +54,9 @@
                 @endforeach
                 </tbody>
             </table>
+        </div>
+        <div class="card-footer">
+            При отправке рассылки она автоматически удаляется
         </div>
     </div>
 @endsection
