@@ -20,7 +20,7 @@ class SendMailings extends Command
      *
      * @var string
      */
-    protected $description = 'Try to send mailings according to their schedule';
+    protected $description = 'Try to send Mailings according to their schedule';
 
     /**
      * Create a new command instance.
@@ -34,8 +34,6 @@ class SendMailings extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
     public function handle()
     {
@@ -48,7 +46,7 @@ class SendMailings extends Command
         }
 
         foreach ($mailings as $mailing) {
-            if ($mailing->send_at->eq($now)) {
+            if ($mailing->send_at->startOfMinute()->eq($now)) {
                 $success = $mailing->send();
                 if ($success)
                     $this->info("Mailing \"{$mailing->name}\" has been sent successfully");
@@ -58,7 +56,5 @@ class SendMailings extends Command
             else
                 $this->line("Mailing \"{$mailing->name}\" is not ready to be sent");
         }
-
-        return 0;
     }
 }
