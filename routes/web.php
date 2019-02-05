@@ -25,6 +25,10 @@ Route::resource('subscribers', 'SubscriberController')->only([
     'index', 'show'
 ]);
 
+Route::bind('mailing', function ($value) {
+    return \App\Mailing::withTrashed()->where('id', $value)->first() ?? abort(404);
+});
+
 Route::model('list', \App\MailingList::class);
 Route::resource('lists', 'MailingListController');
 Route::resource('mailings', 'MailingController');

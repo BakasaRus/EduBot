@@ -84,6 +84,9 @@ class MailingController extends Controller
      */
     public function edit(Mailing $mailing)
     {
+        if ($mailing->trashed())
+            abort(405, 'Edit method is not allowed for deleted Mailings');
+
         return view('mailings.edit')
             ->with('mailing', $mailing)
             ->with('lists', MailingList::all());
@@ -98,6 +101,9 @@ class MailingController extends Controller
      */
     public function update(Request $request, Mailing $mailing)
     {
+        if ($mailing->trashed())
+            abort(405, 'Update method is not allowed for deleted Mailings');
+
         $validated = $request->validate([
             'name' => [
                 'required',
@@ -124,7 +130,10 @@ class MailingController extends Controller
      */
     public function destroy(Mailing $mailing)
     {
-        $mailing->delete();
+        if ($mailing->trashed())
+            $mailing->forceDelete();
+        else
+            $mailing->delete();
         return redirect()->route('mailings.index');
     }
 
@@ -136,6 +145,9 @@ class MailingController extends Controller
      * @throws \Exception
      */
     public function send(Mailing $mailing) {
+        if ($mailing->trashed())
+            abort(405, 'Send method is not allowed for deleted Mailings');
+
         $mailing->send();
         return redirect()->route('mailings.index');
     }
