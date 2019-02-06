@@ -7,7 +7,7 @@
         </div>
 
         <div class="card-body p-0">
-            <table class="table table-border mb-0">
+            <table class="table table-border table-hover mb-0">
                 <thead>
                 <tr>
                     <th>ID</th>
