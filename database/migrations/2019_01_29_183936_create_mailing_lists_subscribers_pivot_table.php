@@ -39,8 +39,8 @@ class CreateMailingListsSubscribersPivotTable extends Migration
     public function down()
     {
         Schema::table('mailing_list_subscriber', function (Blueprint $table) {
-            $table->dropForeign('mailing_list_id');
-            $table->dropForeign('subscriber_id');
+            $table->dropForeign(['mailing_list_id']);
+            $table->dropForeign(['subscriber_id']);
         });
         Schema::dropIfExists('mailing_list_subscriber');
     }

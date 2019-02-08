@@ -39,7 +39,7 @@ class CreateMailingsTable extends Migration
     public function down()
     {
         Schema::table('mailings', function (Blueprint $table) {
-            $table->dropForeign('mailing_list_id');
+            $table->dropForeign(['mailing_list_id']);
         });
         Schema::dropIfExists('mailings');
     }

@@ -62,10 +62,6 @@ class Mailing extends Model
      * @throws \Exception
      */
     public function send() {
-        if (is_null($this->send_at)) {
-            $this->send_at = Carbon::now();
-            $this->save();
-        }
         $this->delete();
 
         $is_successful = true;
