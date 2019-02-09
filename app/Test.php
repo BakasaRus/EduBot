@@ -8,6 +8,10 @@ class Test extends Model
 {
     protected $fillable = ['name', 'description', 'is_available'];
 
+    protected $casts = [
+        'is_available' => 'boolean'
+    ];
+
     public function questions() {
         return $this->hasMany(Question::class);
     }

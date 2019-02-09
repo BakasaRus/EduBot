@@ -31,7 +31,7 @@
                         <td>{{ $test->questions_count }}</td>
                         <td>{{ $test->is_available ? 'Да' : 'Нет' }}</td>
                         <td>
-                            <a href="{{ route('tests.edit', ['id' => $test->id]) }}" class="btn btn-sm btn-outline-primary">Редактировать</a>
+                            <a href="{{ route('tests.edit', ['id' => $test->id]) }}" class="btn btn-sm btn-outline-success">Редактировать</a>
                             <a href="{{ route('tests.show', ['id' => $test->id]) }}" class="btn btn-sm btn-outline-danger" onclick="event.preventDefault(); $('#del_{{ $test->id }}').submit();">Удалить</a>
                             <form action="{{ route('tests.destroy', ['id' => $test->id]) }}" id="del_{{ $test->id }}" method="post" style="display: none;">
                                 @method('DELETE')

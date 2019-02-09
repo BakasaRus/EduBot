@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Test;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TestController extends Controller
 {
@@ -35,10 +36,11 @@ class TestController extends Controller
      */
     public function store(Request $request)
     {
+        $request['is_available'] = $request['is_available'] ? true : false;
         $validated = $request->validate([
             'name' => 'required|unique:tests',
             'description' => 'required',
-            'is_available' => 'required'
+            'is_available' => 'required|boolean'
         ]);
 
         Test::create($validated);
@@ -65,7 +67,7 @@ class TestController extends Controller
      */
     public function edit(Test $test)
     {
-        //
+        return view('tests.edit')->with('test', $test);
     }
 
     /**
@@ -77,17 +79,32 @@ class TestController extends Controller
      */
     public function update(Request $request, Test $test)
     {
-        //
+        $request['is_available'] = $request['is_available'] ? true : false;
+        $validated = $request->validate([
+            'name' => [
+                'required',
+                Rule::unique('tests')->ignore($test->id),
+            ],
+            'description' => 'required',
+            'is_available' => 'required|boolean'
+        ]);
+
+        $test->fill($validated);
+        $test->save();
+
+        return redirect()->route('tests.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Test  $test
+     * @param  \App\Test $test
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(Test $test)
     {
-        //
+        $test->delete();
+        return redirect()->route('tests.index');
     }
 }
