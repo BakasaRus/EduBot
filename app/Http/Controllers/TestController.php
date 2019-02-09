@@ -14,7 +14,7 @@ class TestController extends Controller
      */
     public function index()
     {
-        //
+        return view('tests.index')->with('tests', Test::withCount('questions')->get());
     }
 
     /**
@@ -24,7 +24,7 @@ class TestController extends Controller
      */
     public function create()
     {
-        //
+        return view('tests.create');
     }
 
     /**
@@ -35,7 +35,15 @@ class TestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|unique:tests',
+            'description' => 'required',
+            'is_available' => 'required'
+        ]);
+
+        Test::create($validated);
+
+        return redirect()->route('tests.index');
     }
 
     /**
@@ -46,7 +54,7 @@ class TestController extends Controller
      */
     public function show(Test $test)
     {
-        //
+        return view('tests.show')->with('test', $test->load('questions'));
     }
 
     /**

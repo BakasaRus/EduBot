@@ -37,3 +37,6 @@ Route::resource('subscribers', 'SubscriberController')->only([
 Route::resource('lists', 'MailingListController');
 Route::resource('mailings', 'MailingController');
 Route::post('mailings/{mailing}/send', 'MailingController@send')->name('mailings.send');
+
+Route::resource('tests', 'TestController');
+Route::resource('questions', 'QuestionController');
