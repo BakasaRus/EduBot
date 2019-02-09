@@ -43,6 +43,22 @@ class Subscriber extends Model
         return $this->belongsToMany(MailingList::class);
     }
 
+    public function questions() {
+        return $this->belongsToMany(Question::class, 'question_result')
+                    ->using(QuestionResult::class)
+                    ->withTimestamps()
+                    ->withPivot(['answer'])
+                    ->as('results');
+    }
+
+    public function tests() {
+        return $this->belongsToMany(Test::class, 'test_result')
+                    ->using(TestResult::class)
+                    ->withTimestamps()
+                    ->withPivot(['status'])
+                    ->as('info');
+    }
+
     /**
      * Useful getter for full name
      *
