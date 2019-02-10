@@ -21,6 +21,7 @@ class CreateMailingsTable extends Migration
             $table->dateTime('send_at')->nullable();
             $table->integer('mailing_list_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('mailing_list_id')
                 ->references('id')
