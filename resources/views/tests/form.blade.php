@@ -8,9 +8,3 @@
     <textarea class="form-control" name="description" id="descriptionId" aria-describedby="descriptionHelpId" rows="3">{{ old('description') ?? $test->description ?? "" }}</textarea>
     <small id="descriptionHelpId" class="form-text text-muted">Описание должно пояснять смысл теста, так как оно будет отображаться в боте вместе с названием</small>
 </div>
-<div class="form-check">
-    <label class="form-check-label">
-        <input type="checkbox" class="form-check-input" name="is_available" id="isAvailableId" checked="{{ old('is_available') ?? $test->is_available ?? false }}">
-        Доступен для прохождения
-    </label>
-</div>

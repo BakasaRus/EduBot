@@ -36,11 +36,10 @@ class TestController extends Controller
      */
     public function store(Request $request)
     {
-        $request['is_available'] = $request['is_available'] ? true : false;
         $validated = $request->validate([
             'name' => 'required|unique:tests',
             'description' => 'required',
-            'is_available' => 'required|boolean'
+            'is_available' => 'nullable|boolean'
         ]);
 
         Test::create($validated);
@@ -79,20 +78,19 @@ class TestController extends Controller
      */
     public function update(Request $request, Test $test)
     {
-        $request['is_available'] = $request['is_available'] ? true : false;
         $validated = $request->validate([
             'name' => [
                 'required',
                 Rule::unique('tests')->ignore($test->id),
             ],
             'description' => 'required',
-            'is_available' => 'required|boolean'
+            'is_available' => 'nullable|boolean'
         ]);
 
         $test->fill($validated);
         $test->save();
 
-        return redirect()->route('tests.index');
+        return redirect()->back();
     }
 
     /**

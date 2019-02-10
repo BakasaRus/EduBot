@@ -43,6 +43,9 @@
                         <li class="nav-item">
                             <a href="{{ route('mailings.index') }}" class="nav-link">Рассылки</a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('tests.index') }}" class="nav-link">Тесты</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
