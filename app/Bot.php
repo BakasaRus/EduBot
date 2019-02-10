@@ -43,13 +43,23 @@ class Bot
      */
     static function processMessage($data) {
         Bot::createSubscriber($data['from_id']);
+        $message = "";
+
+        $available = Test::where('is_available', true)->get();
+        foreach ($available as $test) {
+            $message .= $test->name . "\r\n" .
+                        $test->description . "\r\n\r\n";
+        }
+
+        if ($message == "")
+            $message = "Доступных тестов нет :(";
+
         $api = new Client('5.92');
         $api->setDefaultToken(config('services.vk.group_token'));
         $api->request('messages.send', [
             'peer_id' => $data['from_id'],
             'random_id' => random_int(PHP_INT_MIN, PHP_INT_MAX),
-            'reply_to' => $data['id'],
-            'message' => 'Это сообщение является ответом на данное'
+            'message' => $message
         ]);
     }
 }
