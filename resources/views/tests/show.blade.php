@@ -1,14 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="card">
+    <div class="card mb-3">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">
                     {{ $test->name }} ({{ $test->is_available ? 'Доступен' : 'Недоступен' }})
                 </h4>
                 <div>
-                    <a href="{{ route('questions.create') }}" class="btn btn-primary btn-sm">Новый вопрос</a>
                     @if($test->is_available)
                         <a href="{{ route('tests.show', ['id' => $test->id]) }}" class="btn btn-sm btn-outline-secondary" onclick="event.preventDefault(); $('#change_{{ $test->id }}').submit();">Убрать из бота</a>
                     @else
@@ -32,31 +31,27 @@
         </div>
         <div class="card-body">
             <h5>Описание</h5>
-            <p>{!! $test->description !!}</p>
-            <h5>Вопросы</h5>
+            <p style="white-space: pre-wrap">{{ $test->description }}</p>
         </div>
-        <table class="table table-border table-hover mb-0">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Вопрос</th>
-                <th>Правильный ответ</th>
-                <th>Действия</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($test->questions as $question)
-                <tr>
-                    <td>{{ $question->id }}</td>
-                    <td>{{ $question->text }}</td>
-                    <td>{{ $question->correct_answer }}</td>
-                    <td>
+    </div>
 
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+    @include('questions.table', ['questions' => $test->questions])
+
+    {{-- Грязный хак, без которого форма ниже заполняется последним вопросом из цикла --}}
+    @php unset($question); @endphp
+
+    <div class="card mt-3">
+        <div class="card-header">
+            <h4 class="mb-0">Новый вопрос</h4>
+        </div>
+        <div class="card-body">
+            @include('errors')
+            <form action="{{ route('questions.store') }}" method="post">
+                @csrf
+                @include('questions.form')
+                <button type="submit" class="btn btn-primary">Создать</button>
+            </form>
+        </div>
     </div>
 @endsection
 

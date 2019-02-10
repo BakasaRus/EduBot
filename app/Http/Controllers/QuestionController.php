@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Question;
+use App\Test;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -14,7 +15,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
+        return view('questions.index')->with('questions', Question::all());
     }
 
     /**
@@ -24,7 +25,7 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        //
+        return view('questions.create')->with('tests', Test::all());
     }
 
     /**
@@ -35,7 +36,17 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'text' => 'required',
+            'correct_answer' => 'required',
+            'test_id' => 'required|exists:tests,id'
+        ]);
+
+        Question::create($validated);
+
+        return redirect()->route('tests.show', [
+            'id' => $validated['test_id']
+        ]);
     }
 
     /**
@@ -46,7 +57,7 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        //
+        return view('questions.show')->with('question', $question);
     }
 
     /**
@@ -57,7 +68,9 @@ class QuestionController extends Controller
      */
     public function edit(Question $question)
     {
-        //
+        return view('questions.edit')
+            ->with('question', $question)
+            ->with('tests', Test::all());
     }
 
     /**
@@ -69,17 +82,33 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        //
+        $validated = $request->validate([
+            'text' => 'required',
+            'correct_answer' => 'required',
+            'test_id' => 'required|exists:tests,id'
+        ]);
+
+        $question->fill($validated);
+        $question->save();
+
+        return redirect()->route('tests.show', [
+            'id' => $validated['test_id']
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Question  $question
+     * @param  \App\Question $question
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(Question $question)
     {
-        //
+        $id = $question->test_id;
+        $question->delete();
+        return redirect()->route('tests.show', [
+            'id' => $id
+        ]);
     }
 }
