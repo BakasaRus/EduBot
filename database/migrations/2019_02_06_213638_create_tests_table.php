@@ -18,6 +18,8 @@ class CreateTestsTable extends Migration
             $table->string('name')->unique();
             $table->string('description');
             $table->boolean('is_available')->default(false);
+            $table->integer('time_limit')->unsigned();
+            $table->integer('max_attempts')->unsigned();
             $table->timestamps();
         });
     }
