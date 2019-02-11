@@ -43,6 +43,7 @@ class Bot
     ];
 
     const KEYBOARDS = [
+        'empty' => '{"buttons":[],"one_time":true}',
         'test_confirmation' => ' 
             { 
                 "one_time": true, 
@@ -109,7 +110,7 @@ class Bot
          */
         $subscriber = Subscriber::find($data['from_id']);
         $message = "";
-        $keyboard = "";
+        $keyboard = static::KEYBOARDS['empty'];
 
         switch ($subscriber->state) {
             case "test_selection":
