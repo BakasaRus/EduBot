@@ -7,6 +7,79 @@ use Illuminate\Support\Facades\Log;
 
 class Bot
 {
+    const MESSAGES = [
+        'test_selection' =>
+            "Здравствуйте, %s! На данный момент доступны следующие тесты:
+            
+            %s
+            
+            Введите номер теста для сдачи или просмотра результатов.",
+
+        'test_confirmation' =>
+            "Вы выбрали тест \"%s\".
+            %s
+            
+            При отсутствии ответа на вопрос следует отправить \"Нет ответа\". Возможность вернуться к предыдущему вопросу отсутствует.
+            
+            У Вас осталось %d попыток. На тест даётся %d минут. Приступить?",
+
+        'test_question' =>
+            "Вопрос %d
+            
+            %s",
+
+        'results' =>
+            "Результаты теста \"%s\"
+            
+            Всего вопросов: %d
+            Пройдено вопросов: %d
+            Отвечено правильно: %d",
+
+        'unknown' => "Бот в странном состоянии, возвращаемся к начальному."
+    ];
+
+    private $keyboards = [
+        'main_menu' => ' 
+            { 
+                "one_time": false, 
+                "buttons": [ 
+                  [{ 
+                    "action": { 
+                      "type": "text", 
+                      "payload": "{\"button\": \"1\"}", 
+                      "label": "Red" 
+                    }, 
+                    "color": "negative" 
+                  }, 
+                 { 
+                    "action": { 
+                      "type": "text", 
+                      "payload": "{\"button\": \"2\"}", 
+                      "label": "Green" 
+                    }, 
+                    "color": "positive" 
+                  }], 
+                  [{ 
+                    "action": { 
+                      "type": "text", 
+                      "payload": "{\"button\": \"3\"}", 
+                      "label": "White" 
+                    }, 
+                    "color": "default" 
+                  }, 
+                 { 
+                    "action": { 
+                      "type": "text", 
+                      "payload": "{\"button\": \"4\"}", 
+                      "label": "Blue" 
+                    }, 
+                    "color": "primary" 
+                  }] 
+                ] 
+              } 
+        '
+    ];
+
     /**
      * Creates a new subscriber or restores existing one after VK Callback.
      *
@@ -42,17 +115,46 @@ class Bot
      * @throws \ATehnix\VkClient\Exceptions\VkException
      */
     static function processMessage($data) {
-        Bot::createSubscriber($data['from_id']);
+        /*
+         * What if we get a message from a person who doesn't allow messages explicitly?
+         * Well, VK send messages_allow event in this case :)
+         */
+        $subscriber = Subscriber::find($data['from_id']);
         $message = "";
 
-        $available = Test::where('is_available', true)->get();
-        foreach ($available as $test) {
-            $message .= $test->name . "\r\n" .
-                        $test->description . "\r\n\r\n";
-        }
+        switch ($subscriber->state) {
+            case "test_selection":
+                $available = Test::where('is_available', true)->get();
+                foreach ($available as $test) {
+                    $status = $test->subscribers
+                                    ->where('id', $subscriber->id)
+                                    ->first()
+                                    ->info
+                                    ->status;
+                    $message .= $test->name . "\r\n" .
+                                ($status == 2 ? "(Пройдено)\r\n" : "") . "\r\n";
+                }
 
-        if ($message == "")
-            $message = "Доступных тестов нет :(";
+                if ($message == "")
+                    $message = "¯\_(ツ)_/¯";
+
+                $message = sprintf(static::MESSAGES['test_selection'], $subscriber->name, $message);
+                break;
+
+            case "test_confirmation":
+                $message = static::MESSAGES['test_confirmation'];
+                break;
+
+            case "results":
+                $message = static::MESSAGES['results'];
+                break;
+
+            default:
+                $message = static::MESSAGES['unknown'];
+                $subscriber->state = "test_selection";
+                $subscriber->save();
+                break;
+        }
 
         $api = new Client('5.92');
         $api->setDefaultToken(config('services.vk.group_token'));
