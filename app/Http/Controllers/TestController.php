@@ -39,7 +39,8 @@ class TestController extends Controller
         $validated = $request->validate([
             'name' => 'required|unique:tests',
             'description' => 'required',
-            'is_available' => 'nullable|boolean'
+            'time_limit' => 'required|min:1',
+            'max_attempts' => 'required|min:1'
         ]);
 
         Test::create($validated);
@@ -84,13 +85,14 @@ class TestController extends Controller
                 Rule::unique('tests')->ignore($test->id),
             ],
             'description' => 'required',
-            'is_available' => 'nullable|boolean'
+            'time_limit' => 'required|min:1',
+            'max_attempts' => 'required|min:1'
         ]);
 
         $test->fill($validated);
         $test->save();
 
-        return redirect()->back();
+        return redirect()->route('tests.index');
     }
 
     /**
@@ -104,5 +106,13 @@ class TestController extends Controller
     {
         $test->delete();
         return redirect()->route('tests.index');
+    }
+
+    public function change(Test $test)
+    {
+        $test->is_available = !$test->is_available;
+        $test->save();
+
+        return redirect()->back();
     }
 }

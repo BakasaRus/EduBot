@@ -17,7 +17,6 @@ class CreateTestResultTable extends Migration
             $table->increments('id');
             $table->integer('test_id')->unsigned();
             $table->bigInteger('subscriber_id')->unsigned();
-            $table->integer('status')->unsigned()->default(0);
             $table->dateTime('started_at')->nullable();
             $table->integer('attempts')->unsigned()->default(0);
             $table->timestamps();

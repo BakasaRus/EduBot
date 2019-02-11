@@ -15,6 +15,8 @@
                         <th>ID</th>
                         <th>Название</th>
                         <th>Количество вопросов</th>
+                        <th>Количество попыток</th>
+                        <th>Время на тест</th>
                         <th>Доступность</th>
                         <th>Действия</th>
                     </tr>
@@ -29,6 +31,8 @@
                             </a>
                         </td>
                         <td>{{ $test->questions_count }}</td>
+                        <td>{{ $test->max_attempts }}</td>
+                        <td>{{ $test->time_limit_humans }}</td>
                         <td>{{ $test->is_available ? 'Да' : 'Нет' }}</td>
                         <td>
                             @if($test->is_available)

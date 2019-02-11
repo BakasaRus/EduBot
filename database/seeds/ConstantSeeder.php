@@ -30,7 +30,9 @@ class ConstantSeeder extends Seeder
 
         $defaultTest = \App\Test::create([
             'name' => 'Тестовый тест',
-            'description' => 'Это автоматически сгенерированный тест из 3 вопросов. Его можно либо переделать, либо удалить'
+            'description' => 'Это автоматически сгенерированный тест из 3 вопросов. Его можно либо переделать, либо удалить',
+            'time_limit' => 15,
+            'max_attempts' => 3
         ]);
 
 
@@ -52,7 +54,7 @@ class ConstantSeeder extends Seeder
         ]);
 
         $defaultSubscriber = \App\Subscriber::first();
-        $defaultSubscriber->tests()->sync($defaultTest, ['status' => 2]);
+        $defaultSubscriber->tests()->sync($defaultTest);
 
         $defaultSubscriber->questions()->sync([
             1 => ['answer' => '5'],

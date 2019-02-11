@@ -32,6 +32,10 @@
         <div class="card-body">
             <h5>Описание</h5>
             <p style="white-space: pre-wrap">{{ $test->description }}</p>
+            <h5>Время на тест</h5>
+            <p>{{ $test->time_limit_humans }}</p>
+            <h5>Максимальное количество попыток</h5>
+            <p>{{ $test->max_attempts }}</p>
         </div>
     </div>
 

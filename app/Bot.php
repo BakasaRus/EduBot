@@ -123,6 +123,8 @@ class Bot
                 break;
 
             case "test_confirmation":
+                $test = Test::find($message);
+                if (is_null($test))
                 $message = static::MESSAGES['test_confirmation'];
 
 
