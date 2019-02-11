@@ -23,4 +23,23 @@ class Test extends Model
                     ->withPivot(['status'])
                     ->as('info');
     }
+
+    static function availableList(Subscriber $subscriber) {
+        $available = static::where('is_available', true)->get();
+        $list = "";
+        foreach ($available as $test) {
+            $status = $test->subscribers
+                ->where('id', $subscriber->id)
+                ->first()
+                ->info
+                ->status;
+            $list .= $test->id . ". " . $test->name .
+                ($status == 2 ? " (Пройден)" : " (Не пройден)") . "\r\n";
+        }
+
+        if ($list == "")
+            $list = null;
+
+        return $list;
+    }
 }

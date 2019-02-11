@@ -9,11 +9,15 @@ class Bot
 {
     const MESSAGES = [
         'test_selection' =>
-            "Здравствуйте, %s! На данный момент доступны следующие тесты:
+            "Здравствуйте, %s!
+            На данный момент доступны следующие тесты:
             
             %s
-            
             Введите номер теста для сдачи или просмотра результатов.",
+
+        'no_tests' =>
+            "Здравствуйте, %s!
+            На данный момент доступных тестов нет.",
 
         'test_confirmation' =>
             "Вы выбрали тест \"%s\".
@@ -124,21 +128,11 @@ class Bot
 
         switch ($subscriber->state) {
             case "test_selection":
-                $available = Test::where('is_available', true)->get();
-                foreach ($available as $test) {
-                    $status = $test->subscribers
-                                    ->where('id', $subscriber->id)
-                                    ->first()
-                                    ->info
-                                    ->status;
-                    $message .= $test->name . "\r\n" .
-                                ($status == 2 ? "(Пройдено)\r\n" : "") . "\r\n";
-                }
-
-                if ($message == "")
-                    $message = "¯\_(ツ)_/¯";
-
-                $message = sprintf(static::MESSAGES['test_selection'], $subscriber->name, $message);
+                $list = Test::availableList($subscriber);
+                if (is_null($list))
+                    $message = sprintf(static::MESSAGES['no_tests'], $subscriber->name);
+                else
+                    $message = sprintf(static::MESSAGES['test_selection'], $subscriber->name, $list);
                 break;
 
             case "test_confirmation":
