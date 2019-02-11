@@ -40,3 +40,5 @@ Route::post('mailings/{mailing}/send', 'MailingController@send')->name('mailings
 
 Route::resource('tests', 'TestController');
 Route::resource('questions', 'QuestionController');
+
+Route::patch('tests/{test}/change', 'TestController@change')->name('tests.change');

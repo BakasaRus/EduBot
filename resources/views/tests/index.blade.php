@@ -46,12 +46,9 @@
                                 @method('DELETE')
                                 @csrf
                             </form>
-                            <form action="{{ route('tests.update', ['id' => $test->id]) }}" id="change_{{ $test->id }}" method="post" style="display: none;">
+                            <form action="{{ route('tests.change', ['id' => $test->id]) }}" id="change_{{ $test->id }}" method="post" style="display: none;">
                                 @csrf
                                 @method('PATCH')
-                                <input type="text" name="name" value="{{ $test->name }}">
-                                <textarea name="description">{{ $test->description }}</textarea>
-                                <input type="text" name="is_available" value="{{ (int)!($test->is_available) }}">
                             </form>
                         </td>
                     </tr>
