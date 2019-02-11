@@ -42,43 +42,27 @@ class Bot
         'unknown' => "Бот в странном состоянии, возвращаемся к начальному."
     ];
 
-    private $keyboards = [
-        'main_menu' => ' 
+    const KEYBOARDS = [
+        'test_confirmation' => ' 
             { 
-                "one_time": false, 
+                "one_time": true, 
                 "buttons": [ 
                   [{ 
                     "action": { 
                       "type": "text", 
-                      "payload": "{\"button\": \"1\"}", 
-                      "label": "Red" 
-                    }, 
-                    "color": "negative" 
-                  }, 
-                 { 
-                    "action": { 
-                      "type": "text", 
-                      "payload": "{\"button\": \"2\"}", 
-                      "label": "Green" 
+                      "payload": "{\"button\": \"Yes\"}", 
+                      "label": "Да" 
                     }, 
                     "color": "positive" 
-                  }], 
-                  [{ 
-                    "action": { 
-                      "type": "text", 
-                      "payload": "{\"button\": \"3\"}", 
-                      "label": "White" 
-                    }, 
-                    "color": "default" 
                   }, 
                  { 
                     "action": { 
                       "type": "text", 
-                      "payload": "{\"button\": \"4\"}", 
-                      "label": "Blue" 
+                      "payload": "{\"button\": \"No\"}", 
+                      "label": "Нет" 
                     }, 
-                    "color": "primary" 
-                  }] 
+                    "color": "negative" 
+                  }]
                 ] 
               } 
         '
@@ -125,6 +109,7 @@ class Bot
          */
         $subscriber = Subscriber::find($data['from_id']);
         $message = "";
+        $keyboard = "";
 
         switch ($subscriber->state) {
             case "test_selection":
@@ -133,6 +118,7 @@ class Bot
                     $message = sprintf(static::MESSAGES['no_tests'], $subscriber->name);
                 else
                     $message = sprintf(static::MESSAGES['test_selection'], $subscriber->name, $list);
+
                 break;
 
             case "test_confirmation":
@@ -155,7 +141,8 @@ class Bot
         $api->request('messages.send', [
             'peer_id' => $data['from_id'],
             'random_id' => random_int(PHP_INT_MIN, PHP_INT_MAX),
-            'message' => $message
+            'message' => $message,
+            'keyboard' => $keyboard
         ]);
     }
 }
