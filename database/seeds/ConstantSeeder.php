@@ -47,12 +47,14 @@ class ConstantSeeder extends Seeder
             ]
         ]);
 
-        $defaultSubscriber = \App\Subscriber::create([
+        \App\Subscriber::create([
             'id' => 73991663
         ]);
 
-        $defaultSubscriber->tests()->attach(1, ['status' => 2]);
-        $defaultSubscriber->questions()->attach([
+        $defaultSubscriber = \App\Subscriber::first();
+        $defaultSubscriber->tests()->sync($defaultTest, ['status' => 2]);
+
+        $defaultSubscriber->questions()->sync([
             1 => ['answer' => '5'],
             2 => ['answer' => '1941'],
             3 => ['answer' => '55']
