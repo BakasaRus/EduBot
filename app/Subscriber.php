@@ -55,7 +55,7 @@ class Subscriber extends Model
         return $this->belongsToMany(Test::class, 'test_result')
                     ->using(TestResult::class)
                     ->withTimestamps()
-                    ->withPivot(['status'])
+                    ->withPivot(['started_at', 'attempts', 'max_points', 'points'])
                     ->as('info');
     }
 

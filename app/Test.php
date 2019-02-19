@@ -22,7 +22,7 @@ class Test extends Model
         return $this->belongsToMany(Subscriber::class, 'test_result')
                     ->using(TestResult::class)
                     ->withTimestamps()
-                    ->withPivot(['status'])
+                    ->withPivot(['started_at', 'attempts', 'max_points', 'points'])
                     ->as('info');
     }
 
@@ -37,7 +37,7 @@ class Test extends Model
             return $this->time_limit % 60 . " мин.";
     }
 
-    static function availableList(Subscriber $subscriber) {
+    static function availableList() {
         $available = static::where('is_available', true)->get();
         $list = "";
         foreach ($available as $test) {
