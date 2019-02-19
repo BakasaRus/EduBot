@@ -4,6 +4,7 @@ namespace App;
 
 use ATehnix\VkClient\Client;
 use ATehnix\VkClient\Requests\Request;
+use Carbon\Carbon;
 
 class Bot
 {
@@ -254,22 +255,33 @@ class Bot
                 break;
 
             case "test_question":
-                $test = $subscriber->tests()->find($subscriber->current_test->id);
+                $test = $subscriber->current_test;
                 $info = $subscriber->test_info;
 
-                $subscriber->questions()->attach([
-                    $subscriber->question_id => ['answer' => $data['text']]
-                ]);
-                if ($subscriber->current_question->correct_answer == $data['text']) {
-                    $info->points++;
-                    $info->save();
+                $endOfTest = $info->started_at->addMinutes($test->time_limit);
+                $timeIsUp = Carbon::now()->greaterThan($endOfTest);
+
+                if ($timeIsUp) {
+                    $message = __('bot.time_is_up', [
+                        'time' => $test->time_limit_humans
+                    ]);
+                    $requests->push(compact('message', 'keyboard'));
                 }
-                $subscriber->save();
+                else {
+                    $subscriber->questions()->attach([
+                        $subscriber->question_id => ['answer' => $data['text']]
+                    ]);
+                    if ($subscriber->current_question->correct_answer == $data['text']) {
+                        $info->points++;
+                        $info->save();
+                    }
+                    $subscriber->save();
 
-                $used = $subscriber->questions()->where('test_id', $subscriber->test_id)->get()->pluck('id');
-                $available = $subscriber->current_test->questions()->whereNotIn('id', $used)->get();
+                    $used = $subscriber->questions()->where('test_id', $subscriber->test_id)->get()->pluck('id');
+                    $available = $test->questions()->whereNotIn('id', $used)->get();
+                }
 
-                if ($available->isEmpty()) {
+                if ($timeIsUp || $available->isEmpty()) {
                     $subscriber->state = "test_selection";
                     $subscriber->save();
                     $subscriber->finishTest();

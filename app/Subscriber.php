@@ -69,9 +69,11 @@ class Subscriber extends Model
     }
 
     public function getTestInfoAttribute() {
-        return TestResult::where('test_id', $this['test_id'])
-                         ->where('subscriber_id', $this['id'])
-                         ->first();
+        $info = TestResult::firstOrCreate([
+            'test_id' => $this['test_id'],
+            'subscriber_id' => $this['id']
+        ]);
+        return $info;
     }
 
     /**
