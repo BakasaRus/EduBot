@@ -19,4 +19,8 @@ class Question extends Model
                     ->withPivot(['answer'])
                     ->as('results');
     }
+
+    public function current_subscribers() {
+        return $this->hasMany(Subscriber::class, 'question_id');
+    }
 }

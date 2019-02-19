@@ -26,6 +26,10 @@ class Test extends Model
                     ->as('info');
     }
 
+    public function current_subscribers() {
+        return $this->hasMany(Subscriber::class, 'test_id');
+    }
+
     public function getTimeLimitHumansAttribute() {
         if (intdiv($this->time_limit, 60) > 0)
             return intdiv($this->time_limit, 60) . " ч. " . $this->time_limit % 60 . " мин.";
