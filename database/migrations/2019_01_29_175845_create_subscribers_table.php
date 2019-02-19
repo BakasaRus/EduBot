@@ -17,7 +17,9 @@ class CreateSubscribersTable extends Migration
             $table->bigInteger('id')->unsigned()->primary();
             $table->string('name')->default("");
             $table->string('surname')->default("");
-            $table->string('state')->default('menu');
+            $table->string('state')->default("test_selection");
+            $table->integer('test_id')->nullable();
+            $table->integer('question_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
