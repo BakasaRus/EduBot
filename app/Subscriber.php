@@ -4,6 +4,7 @@ namespace App;
 
 use ATehnix\VkClient\Client;
 use ATehnix\VkClient\Exceptions\VkException;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -59,6 +60,20 @@ class Subscriber extends Model
                     ->as('info');
     }
 
+    public function current_question() {
+        return $this->belongsTo(Question::class, 'question_id');
+    }
+
+    public function current_test() {
+        return $this->belongsTo(Test::class, 'test_id');
+    }
+
+    public function getTestInfoAttribute() {
+        return TestResult::where('test_id', $this['test_id'])
+                         ->where('subscriber_id', $this['id'])
+                         ->first();
+    }
+
     /**
      * Useful getter for full name
      *
@@ -87,5 +102,23 @@ class Subscriber extends Model
         catch (VkException $e) {
             \Log::error("VK Error {$e->getCode()}: {$e->getMessage()}");
         }
+    }
+
+    public function startTest() {
+        $info = $this->test_info;
+        $info->started_at = Carbon::now();
+        $info->attempts++;
+        $info->max_points = $this->current_test->questions()->count();
+        $info->points = 0;
+        $info->save();
+
+        $this->questions()->where('test_id', $this->test_id)->detach();
+
+    }
+
+    public function finishTest() {
+        $this->current_question()->dissociate();
+        $this->current_test()->dissociate();
+        $this->save();
     }
 }
