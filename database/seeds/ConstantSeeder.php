@@ -54,7 +54,12 @@ class ConstantSeeder extends Seeder
         ]);
 
         $defaultSubscriber = \App\Subscriber::first();
-        $defaultSubscriber->tests()->sync($defaultTest);
+        $defaultSubscriber->tests()->sync([
+            $defaultTest->id => [
+                'points' => 2,
+                'max_points' => 3
+            ]
+        ]);
 
         $defaultSubscriber->questions()->sync([
             1 => ['answer' => '5'],
