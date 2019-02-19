@@ -19,6 +19,8 @@ class CreateTestResultTable extends Migration
             $table->bigInteger('subscriber_id')->unsigned();
             $table->dateTime('started_at')->nullable();
             $table->integer('attempts')->unsigned()->default(0);
+            $table->integer('max_points')->default(0);
+            $table->integer('points')->default(0);
             $table->timestamps();
 
             $table->foreign('test_id')
