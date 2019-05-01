@@ -28,7 +28,7 @@
 </div>
 <div class="form-group">
     <label for="sendAtId">Время рассылки</label>
-    @isset($mailing)
+    @isset($mailing->send_at)
         <input type='datetime-local' class="form-control" name="send_at" id='sendAtId' aria-describedby="sendAtHelpId" value="{{ old('send_at') ?? $mailing->send_at->format('Y-m-d\TH:i')}}"/>
     @else
         <input type='datetime-local' class="form-control" name="send_at" id='sendAtId' aria-describedby="sendAtHelpId" value="{{ old('send_at') ?? null }}"/>
