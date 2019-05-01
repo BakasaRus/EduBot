@@ -114,7 +114,8 @@ class Subscriber extends Model
         $info->points = 0;
         $info->save();
 
-        $this->questions()->where('test_id', $this->test_id)->detach();
+        $ids = $this->questions()->where('test_id', $this['test_id'])->get()->pluck('id');
+        $this->questions()->detach($ids);
 
     }
 
