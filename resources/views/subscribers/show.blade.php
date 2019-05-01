@@ -44,8 +44,13 @@
                             <td>{{ $test->info->points }} из {{ $test->info->max_points }}</td>
                             <td>{{ $test->info->started_at }}</td>
                             <td>
-                                <a href="{{ route('tests.results.index', [$subscriber, $test]) }}" class="btn btn-sm btn-outline-primary">Просмотреть попытку</a>
-                                <a href="#" class="btn btn-sm btn-outline-danger">Сбросить попытки</a>
+                                <a href="{{ route('tests.results.index', [$subscriber, $test]) }}" class="btn btn-sm btn-outline-primary">Просмотреть последнюю попытку</a>
+                                @if($test->info->attempts > 0)
+                                    <a href="{{ route('tests.results.index', [$subscriber, $test]) }}" class="btn btn-sm btn-outline-danger" onclick="event.preventDefault(); $('#zero_{{ $test->id }}').submit();">Обнулить попытки</a>
+                                    <form action="{{ route('tests.results.zero', [$subscriber, $test]) }}" id="zero_{{ $test->id }}" method="post" style="display: none;">
+                                        @csrf
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

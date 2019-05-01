@@ -43,3 +43,4 @@ Route::resource('questions', 'QuestionController');
 
 Route::patch('tests/{test}/change', 'TestController@change')->name('tests.change');
 Route::get('subscribers/{subscriber}/tests/{test}', 'TestResultController@index')->name('tests.results.index');
+Route::post('subscribers/{subscriber}/tests/{test}', 'TestResultController@zero')->name('tests.results.zero');

@@ -23,6 +23,15 @@ class TestResultController extends Controller
             ->with('subscriber', $subscriber);
     }
 
+    public function zero(Subscriber $subscriber, Test $test)
+    {
+        $test_result = TestResult::where('subscriber_id', $subscriber->id)->where('test_id', $test->id)->first();
+        $test_result->attempts = 0;
+        $test_result->save();
+
+        return redirect()->back();
+    }
+
     /**
      * Show the form for creating a new resource.
      *
